@@ -38,12 +38,17 @@ dependencies:
   twitter_api: ^0.1.2
   flutter_svg: ^0.18.1
 
+  shared_preferences: ^0.5.12
+
   get: ^3.5.1
+  get_it: ^5.0.1
   flutter_screenutil: ^2.3.1
 
   cloud_firestore: ^0.14.0+2
   firebase_core: ^0.5.0
   firebase_auth: ^0.18.0+1
+  cloud_functions: ^0.6.0
+
 
 dev_dependencies:
   flutter_test:

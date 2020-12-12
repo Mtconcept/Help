@@ -1,12 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:help/app/locator.dart';
 import 'package:help/views/login/login.dart';
 import 'package:help/views/splashScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  setUpLocator();
   runApp(Help());
 }
 
@@ -20,7 +22,7 @@ class Help extends StatelessWidget {
         bottomSheetTheme:
             BottomSheetThemeData(backgroundColor: Colors.black.withOpacity(0)),
       ),
-      home: LogIn(),
+      home: SplashScreen(),
     );
   }
 }
