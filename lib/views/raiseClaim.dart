@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:help/constants/buttons.dart';
 import 'package:help/constants/colors.dart';
 import 'package:help/constants/textFields.dart';
@@ -11,10 +12,10 @@ class RaiseClaim extends StatefulWidget {
 
 class _RaiseClaimState extends State<RaiseClaim> {
   TextEditingController _nameEditingController;
-  TextEditingController _sexEditingController;
   TextEditingController _ageEditingController;
   TextEditingController _claimEditingController;
   bool isChecked = false;
+  String imgPath;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,11 @@ class _RaiseClaimState extends State<RaiseClaim> {
                     Navigator.pop(context);
                   }),
               Center(
-                  child: Image.asset('assets/images/claim big.png', width: 90)),
+                child: SvgPicture.asset(
+                  'assets/svgs/claim.svg',
+                  width: 90,
+                ),
+              ),
               SizedBox(height: 25),
               Center(
                   child: Text(
@@ -71,21 +76,21 @@ class _RaiseClaimState extends State<RaiseClaim> {
                       MyTextFields(
                         controller: _nameEditingController,
                         fieldTitle: 'Your Name',
+                        maxline: 1,
                       ),
                       SizedBox(
                         height: 24,
                       ),
                       DropdownButton(
                         items: [
-                          DropdownMenuItem(child:
-                          Text('Male'),
+                          DropdownMenuItem(
+                            child: Text('Male'),
                           ),
-                          DropdownMenuItem(child:
-                          Text('Female'),
+                          DropdownMenuItem(
+                            child: Text('Female'),
                           ),
                         ],
-                        onChanged: (value) {  },
-
+                        onChanged: (value) {},
                       ),
                       SizedBox(
                         height: 24,
@@ -93,6 +98,7 @@ class _RaiseClaimState extends State<RaiseClaim> {
                       MyTextFields(
                         controller: _ageEditingController,
                         fieldTitle: 'Your Age',
+                        maxline: 1,
                       ),
                       SizedBox(
                         height: 24,
@@ -109,8 +115,7 @@ class _RaiseClaimState extends State<RaiseClaim> {
                       Row(
                         children: [
                           Checkbox(
-
-                            checkColor: klightGrey,
+                              checkColor: klightGrey,
                               activeColor: kdarktGrey,
                               value: isChecked,
                               onChanged: (value) {
@@ -118,9 +123,13 @@ class _RaiseClaimState extends State<RaiseClaim> {
                                   isChecked = value;
                                 });
                               }),
-                          Text(
-                            'I agree that every information entered is 100% true',
-                            style: TextStyle(fontSize: 16, color: kBgColor),
+                          Flexible(
+                            child: Text(
+                              'I agree that every information entered is 100% true',
+                              style: TextStyle(fontSize: 16, color: kBgColor),
+                              softWrap: true,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ],
                       ),

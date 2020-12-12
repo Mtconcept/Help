@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'home.dart';
+import 'package:help/views/register.dart';
 
 class Onboarding extends StatefulWidget {
   @override
@@ -37,7 +36,7 @@ class _OnboardingState extends State<Onboarding> {
   }
 
   void register() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) => Home()));
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => Register()));
   }
 
   @override
@@ -98,7 +97,7 @@ class _OnboardingState extends State<Onboarding> {
           : BottomSheet(
               title: 'A shoulder to lean on',
               description:
-                  'We want to be that houlder you can lean on, any crime related cases should be brought to notice to the socitey as soon as possible.',
+                  'We want to be that shoulder you can lean on, any crime related cases should be brought to notice to the socitey as soon as possible.',
               onNextPressed: register,
             ),
     );

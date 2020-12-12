@@ -1,27 +1,44 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:help/constants/colors.dart';
 import 'package:help/views/onboarding.dart';
-
-import 'otp.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
+  AnimationController _controller;
+  // Animation animation;
   @override
   void initState() {
     Timer(
-        Duration(seconds: 5),
-        () => Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => OTP())));
+      Duration(seconds: 5),
+      () => Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => Onboarding())),
+    );
     super.initState();
+    _controller = AnimationController(
+      duration: Duration(milliseconds: 2000),
+      upperBound: 100,
+      vsync: this,
+    );
+    _controller.forward();
+    _controller.addListener(() {
+      setState(() {});
+    });
   }
 
-  void animation() {}
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,18 +47,20 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/images/help 1.png'),
+            SvgPicture.asset(
+              'assets/svgs/Helplogo.svg',
+              height: _controller.value,
+            ),
             SizedBox(
               height: 8,
             ),
-            AnimatedDefaultTextStyle(
-              curve: Curves.bounceIn,
-              duration: Duration(milliseconds: 1500),
-              child: Text(
-                'Help Me',
-              ),
+            Text(
+              'Help Me',
               style: TextStyle(
-                  color: kWhite, fontSize: 30, decoration: TextDecoration.none),
+                  color: kWhite,
+                  fontSize: 30,
+                  fontFamily: 'Gilroy',
+                  decoration: TextDecoration.none),
             )
           ],
         ),

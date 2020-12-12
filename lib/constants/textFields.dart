@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:help/constants/colors.dart';
@@ -9,18 +8,20 @@ class MyTextFields extends StatelessWidget {
   final String fieldTitle;
   final int maxLength;
   final int maxline;
+  final Color fillColor;
   final TextInputType inputType;
   final Function onChange;
 
-  const MyTextFields(
-      {Key key,
-      this.controller,
-      this.fieldTitle,
-      this.maxLength,
-      this.maxline,
-      this.inputType,
-        this.onChange,})
-      : super(key: key);
+  const MyTextFields({
+    Key key,
+    this.controller,
+    this.fieldTitle,
+    this.maxLength,
+    this.fillColor = kWhite,
+    this.maxline,
+    this.inputType,
+    this.onChange,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,7 @@ class MyTextFields extends StatelessWidget {
         hintText: fieldTitle,
         hintStyle: TextStyle(color: kBgColor.withOpacity(0.5)),
         filled: true,
-        fillColor: kWhite,
+        fillColor: fillColor,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
