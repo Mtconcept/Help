@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:help/constants/buttons.dart';
 import 'package:help/constants/colors.dart';
 import 'package:help/constants/homeCard.dart';
 import 'package:help/views/ambulance.dart';
-import 'package:help/views/raise_claim/raise_claim.dart';
+import 'package:help/views/raiseClaim.dart';
 import 'package:help/views/recorder.dart';
 import 'package:help/views/talk.dart';
 import 'package:share/share.dart';
@@ -153,8 +152,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, width: 375, height: 812, allowFontScaling: true);
-
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(

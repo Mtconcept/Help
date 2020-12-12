@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:help/constants/colors.dart';
 import 'package:help/constants/textFields.dart';
@@ -19,6 +20,11 @@ class Message {
 }
 
 class Chat extends StatelessWidget {
+  final String currentUserId;
+  final String recipientId;
+
+  Chat({Key key, this.currentUserId, this.recipientId}) : super(key: key);
+
   final List<Message> messages = <Message>[
     Message(
       date: '1/12/2020',
@@ -50,6 +56,9 @@ class Chat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Store _store = Store();
+//    _store.sendMessage();
+    _store.test();
     return Scaffold(
       backgroundColor: kWhite,
       appBar: AppBar(
@@ -107,11 +116,14 @@ Widget get chatTextField => Padding(
           children: [
             Expanded(
               flex: 11,
-              child: MyTextFields(
-                fillColor: Color(0xFFF6F6F6),
-                fieldTitle: 'Type Message',
-                maxline: 1,
-                inputType: TextInputType.text,
+              child: Container(
+                constraints: BoxConstraints(maxHeight: 200),
+                child: MyTextFields(
+                  fillColor: Color(0xFFF6F6F6),
+                  fieldTitle: 'Type Message',
+                  maxline: null,
+                  inputType: TextInputType.multiline,
+                ),
               ),
             ),
             Expanded(
@@ -197,5 +209,40 @@ class ChatItem extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class Store {
+  FirebaseFirestore _store = FirebaseFirestore.instance;
+
+  sendMessage(
+      {String currentUserId, String recipientId, String message}) async {
+    //senders db
+    var sender = _store
+        .collection('chats')
+        .doc('regular_user')
+        .collection(currentUserId)
+        .doc(recipientId);
+    var senderMessage = sender
+        .set({'isSender': true, 'text': message, 'time': Timestamp.now()});
+
+    //receivers db
+    var receiver = _store
+        .collection('chats')
+        .doc('regular_user')
+        .collection(currentUserId)
+        .doc(recipientId);
+    var receiverMessages = receiver
+        .set({'isSender': true, 'text': message, 'time': Timestamp.now()});
+  }
+
+  test() {
+    var stuffs =
+        _store.collection('chats').doc(r'DK3x5jANCshnMSYeQSI7DvebLct2');
+    var messages = stuffs.collection(
+        r'DK3x5jANCshnMSYeQSI7DvebLct2 - BMLATSw8fkhV6Qhltzfk0A9Lmm23');
+    messages.snapshots().listen((QuerySnapshot event) {
+//      print(event.docs.);
+    });
   }
 }

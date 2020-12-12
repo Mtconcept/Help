@@ -41,6 +41,7 @@ class SingUpController extends GetxController {
       "fullName": name,
       "kinName": kName,
       "kAddress": kAddress,
+      "acctType": "User",
     };
 
     await reference.set(data);

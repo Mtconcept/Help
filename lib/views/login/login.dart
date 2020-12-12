@@ -1,11 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:get/get.dart';
-
-import '../../constants/buttons.dart';
-import '../../constants/colors.dart';
-import '../../constants/textFields.dart';
-import 'login_controller.dart';
+import 'package:help/constants/buttons.dart';
+import 'package:help/constants/colors.dart';
+import 'package:help/constants/textFields.dart';
+import 'package:help/views/login/login_controller.dart';
 
 class LogIn extends StatelessWidget {
   String imagePath = 'assets/images/login.png';
@@ -27,12 +27,15 @@ class LogIn extends StatelessWidget {
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    Column(
-                      children: <Widget>[
-                        Image(
-                          image: AssetImage(imagePath),
-                        ),
-                      ],
+                    SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Image(
+                            image: AssetImage(imagePath),
+                          ),
+                        ],
+                      ),
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.end,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class MyButtons extends StatelessWidget {
   final Color color, textColor;
   final String text;
@@ -12,11 +13,11 @@ class MyButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlatButton(
       onPressed: onPress,
-      child: Text(text.toUpperCase(),
-          style: TextStyle(
-            color: textColor,
-            fontSize: 16,
-          )),
+      child: Text(
+        text.toUpperCase(),
+        style: TextStyle( color: textColor,
+          fontSize: 16,)
+      ),
       color: color,
       padding: EdgeInsets.symmetric(horizontal: 35, vertical: 15),
       shape: RoundedRectangleBorder(

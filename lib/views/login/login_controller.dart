@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:help/shared_views/loading_dialog.dart';
 import 'package:help/views/otp.dart';
 import 'package:help/views/signup/signUp.dart';
-
 import '../home.dart';
 
 class LoginController extends GetxController {
