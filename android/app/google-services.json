@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "270866000108",
+    "firebase_url": "https://help-me-cfc1d.firebaseio.com",
+    "project_id": "help-me-cfc1d",
+    "storage_bucket": "help-me-cfc1d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270866000108:android:922ca81e1b3609e12e9dc9",
+        "android_client_info": {
+          "package_name": "com.tee.help"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "270866000108-8rb4nq59fj2qeqos0t3dv8eq93hl551o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tee.help",
+            "certificate_hash": "21edb7c8f02b7ef952649b257311758e950c057f"
+          }
+        },
+        {
+          "client_id": "270866000108-64jb7j5ga08sauanv7r8d8c77nmietdb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJgzHYHkuQ3NvPG7zZZ1rJaU1QOtlLGfY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "270866000108-64jb7j5ga08sauanv7r8d8c77nmietdb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
