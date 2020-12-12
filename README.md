@@ -11,4 +11,4 @@ git init, git add . , git commit -m "Commit Message here" git push origin master
 in your git interface click on make pull request
 locate your username branch and make a pull request to,
 dont make a pull request to master pls
-✌️ let's start creating those magic✨ ✨
+let's start creating those magic

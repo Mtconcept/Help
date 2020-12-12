@@ -8,7 +8,6 @@ class StorageUtil {
       _sharedPrefs = await SharedPreferences.getInstance();
   }
 
-  set isActivist(bool value) =>
-      value != null ? _sharedPrefs.setBool('isActivist', value) : null;
-  bool get isActivist => _sharedPrefs.getBool('isActivist');
+  set isActivist(bool value) => _sharedPrefs.setBool('isActivist', value);
+  bool get isActivist => _sharedPrefs.getBool('isActivist') ?? false;
 }

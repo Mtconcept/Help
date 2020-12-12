@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:help/app/locator.dart';
 import 'package:help/core/utils/storageUtil.dart';
-import 'package:help/shared_views/loading_dialog.dart';
-import 'package:help/views/otp.dart';
-import 'package:help/views/signup/signUp.dart';
+import 'package:help/ui/shared_views/loading_dialog.dart';
+import 'package:help/ui/views/otp.dart';
+import 'package:help/ui/views/signup/signUp.dart';
 import '../home.dart';
 // import 'fire'
 
@@ -23,7 +23,10 @@ class LoginController extends GetxController {
   String verificationId;
   int forceResendingToken;
 
+  FocusNode phoneNumberFocus = FocusNode();
+
   FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   StorageUtil _storageUtil = locator<StorageUtil>();
 
   String otpCode = "";
@@ -36,14 +39,15 @@ class LoginController extends GetxController {
     pin6.clear();
   }
 
-  void getStarted() {
+  void getStarted() async {
     String phoneNumber = phoneNumController.text;
 
-    if (phoneNumber.isEmpty) {
+    if (phoneNumber.isEmpty || phoneNumber.length < 11) {
       _showSnackBar(message: "Please enter a valid phone number");
-
       return;
     }
+
+    print(phoneNumber);
 
     loadDialog(title: "Please Hold on", dismiss: false);
 
@@ -51,23 +55,25 @@ class LoginController extends GetxController {
       String formattedPhone = phoneNumber.substring(1, phoneNumber.length);
       phoneNumber = "+234$formattedPhone";
     } else {
-      phoneNumber = "+234$phoneNumber";
+      _showSnackBar(message: "Invalid phone number format");
+      return;
     }
+    phoneNumberFocus.unfocus();
 
-    //   phoneNumber ="+2348036007161";
+    loadDialog(title: "Please Hold on", dismiss: false);
+
+    // phoneNumber ="+2348036007161";
 
     auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: verificationCompleted,
         verificationFailed: verificationFailed,
         codeSent: (verificationId, forceResendingToken) {
-          if (Get.isDialogOpen) {
-            Get.back();
-          }
+          Get.back();
+
           otpCode = "";
           this.verificationId = verificationId;
           this.forceResendingToken = forceResendingToken;
-          print("otp sent");
           Get.to(OTP());
         },
         codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
@@ -123,7 +129,6 @@ class LoginController extends GetxController {
       if (Get.isDialogOpen) {
         Get.back();
       }
-
       print(e);
       _showSnackBar(message: "Unable to verify your number");
       return;
@@ -150,22 +155,12 @@ class LoginController extends GetxController {
     ));
   }
 
-  // Future<bool> checkStatus() async {
-  //   //check activist status
-  //   User user = auth.currentUser;
-  //   IdTokenResult _result = await auth.currentUser.getIdTokenResult();
-  //   return _result.claims['isActivist'];
-  // }
-
   readUserData(User user) async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
     IdTokenResult _result = await auth.currentUser.getIdTokenResult(true);
-    // print('isActivist Status is ' + _result?.claims['isActivist'].toString());
-    if (_result.claims['isActivist'] == null) {
-      print('user status is null');
-      _result = await auth.currentUser.getIdTokenResult(true);
-    }
-    _storageUtil.isActivist = _result.claims['isActivist'];
+    bool isActivist = await _result.claims['isActivist'];
+
+    print('\n\n\nisActivist Status is $isActivist \n\n\n');
+    _storageUtil.isActivist = isActivist;
 
     DocumentReference reference = firestore
         .collection("users")
@@ -177,6 +172,14 @@ class LoginController extends GetxController {
 
     if (Get.isDialogOpen) {
       Get.back();
+    }
+
+    if (isActivist == null) {
+      _result = await auth.currentUser.getIdTokenResult(true);
+      isActivist = await _result.claims['isActivist'];
+
+      print('\n\n\nisActivist Status is $isActivist \n\n\n');
+      _storageUtil.isActivist = isActivist;
     }
 
     if (documentSnapshot == null) {

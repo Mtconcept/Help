@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:help/shared_views/loading_dialog.dart';
-import 'package:help/views/home.dart';
+import 'package:help/ui/shared_views/loading_dialog.dart';
+import 'package:help/ui/views/home.dart';
 
-class SingUpController extends GetxController {
+class SignUpController extends GetxController {
   TextEditingController fullNameController = TextEditingController();
   TextEditingController kinNameController = TextEditingController();
   TextEditingController kinAddressController = TextEditingController();

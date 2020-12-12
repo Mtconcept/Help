@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:help/constants/buttons.dart';
-import 'package:help/constants/colors.dart';
-import 'package:help/views/login/login_controller.dart';
+import 'package:help/ui/constants/buttons.dart';
+import 'package:help/ui/constants/colors.dart';
+import 'package:help/ui/views/login/login_controller.dart';
 
 class OTP extends StatefulWidget {
   @override
@@ -80,115 +80,117 @@ class _OTPState extends State<OTP> {
       builder: (model) {
         return Scaffold(
           body: SafeArea(
-            child: Container(
-              height: _height,
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Image(
-                          image: AssetImage(imagePath),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      SingleChildScrollView(
-                        child: Container(
-                          height: _height / 10 * 5,
-                          width: _width,
-                          padding:
-                              EdgeInsets.only(top: 32, left: 32, right: 32),
-                          decoration: BoxDecoration(
-                            color: klightGrey,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(32),
-                              topRight: Radius.circular(32),
-                            ),
+            child: SingleChildScrollView(
+                          child: Container(
+                height: _height,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Image(
+                            image: AssetImage(imagePath),
                           ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Secured\nVerificaton OTP',
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.bold),
+                        ],
+                      ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SingleChildScrollView(
+                          child: Container(
+                            height: _height / 10 * 5,
+                            width: _width,
+                            padding:
+                                EdgeInsets.only(top: 32, left: 32, right: 32),
+                            decoration: BoxDecoration(
+                              color: klightGrey,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(32),
+                                topRight: Radius.circular(32),
                               ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              Text(
-                                'Please type the verifiction code sent to',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                              Text(
-                                '${model.phoneNumController.text.trim()}',
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
-                              ),
-                              Spacer(),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Expanded(
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Secured\nVerificaton OTP',
+                                  style: TextStyle(
+                                      fontSize: 25, fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Text(
+                                  'Please type the verifiction code sent to',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                Text(
+                                  '${model.phoneNumController.text.trim()}',
+                                  style: TextStyle(
+                                      fontSize: 15, fontWeight: FontWeight.bold),
+                                ),
+                                Spacer(),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                        flex: 1,
+                                        child: _pinFields(_width / 4,
+                                            autofocus: false,
+                                            editingController: model.pin1)),
+                                    Expanded(
                                       flex: 1,
                                       child: _pinFields(_width / 4,
-                                          autofocus: false,
-                                          editingController: model.pin1)),
-                                  Expanded(
-                                    flex: 1,
-                                    child: _pinFields(_width / 4,
-                                        editingController: model.pin2),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: _pinFields(_width / 4,
-                                        editingController: model.pin3),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: _pinFields(_width / 4,
-                                        editingController: model.pin4),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: _pinFields(_width / 4,
-                                        editingController: model.pin5),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: _pinFields(_width / 4,
-                                        editingController: model.pin6),
-                                  ),
-                                ],
-                              ),
-                              Spacer(),
-                              Center(
-                                child: MyButtons(
-                                  color: kBgColor,
-                                  textColor: kWhite,
-                                  text: 'verify otp',
-                                  onPress: () {
-                                    model.verifyOtp();
-                                    model.clearPinFields();
-                                  },
+                                          editingController: model.pin2),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: _pinFields(_width / 4,
+                                          editingController: model.pin3),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: _pinFields(_width / 4,
+                                          editingController: model.pin4),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: _pinFields(_width / 4,
+                                          editingController: model.pin5),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: _pinFields(_width / 4,
+                                          editingController: model.pin6),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              Spacer(),
-                            ],
+                                Spacer(),
+                                Center(
+                                  child: MyButtons(
+                                    color: kBgColor,
+                                    textColor: kWhite,
+                                    text: 'verify otp',
+                                    onPress: () {
+                                      model.verifyOtp();
+                                      model.clearPinFields();
+                                    },
+                                  ),
+                                ),
+                                Spacer(),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),

@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:help/constants/colors.dart';
+import 'package:help/ui/constants/colors.dart';
 
 class MyTextFields extends StatelessWidget {
   final TextEditingController controller;
@@ -10,8 +10,11 @@ class MyTextFields extends StatelessWidget {
   final int maxline;
   final Color fillColor;
   final TextInputType inputType;
+  final FocusNode focusNode;
   final Function onChange;
   final TextCapitalization capitalization;
+  final Function(String val) validator;
+  final Function() onEditingComplete;
 
   const MyTextFields({
     Key key,
@@ -21,14 +24,19 @@ class MyTextFields extends StatelessWidget {
     this.fillColor = kWhite,
     this.maxline,
     this.inputType,
+    this.focusNode,
     this.onChange,
     this.capitalization = TextCapitalization.none,
+    this.validator,
+    this.onEditingComplete,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      selectionWidthStyle: BoxWidthStyle.max,
+    return TextFormField(
+      validator: validator,
+      focusNode: focusNode,
+      // selectionWidthStyle: BoxWidthStyle.max,
       maxLength: maxLength,
       maxLines: maxline,
       keyboardType: inputType,
@@ -36,7 +44,12 @@ class MyTextFields extends StatelessWidget {
       controller: controller,
       keyboardAppearance: Brightness.dark,
       textCapitalization: capitalization,
+      onEditingComplete: onEditingComplete,
       decoration: InputDecoration(
+        errorBorder: InputBorder.none,
+        focusedErrorBorder: InputBorder.none,
+        errorStyle: TextStyle(
+            fontSize: 12, fontWeight: FontWeight.normal, color: kBgColor),
         focusedBorder: InputBorder.none,
         enabledBorder: InputBorder.none,
         hintText: fieldTitle,

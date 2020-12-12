@@ -4,16 +4,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:help/constants/buttons.dart';
-import 'package:help/constants/colors.dart';
-import 'package:help/constants/homeCard.dart';
-import 'package:help/views/ambulance.dart';
-import 'package:help/views/raiseClaim.dart';
-import 'package:help/views/recorder.dart';
-import 'package:help/views/talk.dart';
+import 'package:get/get.dart';
+import 'package:help/app/locator.dart';
+import 'package:help/core/utils/storageUtil.dart';
+import 'package:help/ui/constants/buttons.dart';
+import 'package:help/ui/constants/colors.dart';
+import 'package:help/ui/constants/homeCard.dart';
+import 'package:help/ui/views/emergency_service/ambulance.dart';
+import 'package:help/ui/views/recorder.dart';
+import 'package:help/ui/views/talk/talk.dart';
 import 'package:share/share.dart';
-import 'package:tutorial_coach_mark/target_focus.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'raise_claim/raise_claim.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -21,7 +22,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
-  List<TargetFocus> targets = [];
   Position currentPosition;
   String currentAddress = '';
   Timer timer;
@@ -32,65 +32,64 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   final Geolocator _geolocator = Geolocator()..forceAndroidLocationManager;
 
-  test() {
+  checkStatus() {
     FirebaseAuth auth = FirebaseAuth.instance;
-    // User user = FirebaseUserUser();
-    var _me = auth.currentUser.getIdTokenResult().then((user) => {
-          print(user.claims),
-        });
+    auth.currentUser.getIdTokenResult(true).then((user) {
+      print(user.claims);
+      locator<StorageUtil>().isActivist = user.claims['isActivist'];
+    });
     //  print(auth.currentUser.uid);
   }
 
   makeAdmin() {
     FirebaseAuth auth = FirebaseAuth.instance;
     CloudFunctions _functions = CloudFunctions.instance;
-    HttpsCallable stuff =
+    HttpsCallable function =
         _functions.getHttpsCallable(functionName: 'addAdminRole');
-    print(stuff
-        .call(<String, dynamic>{
-          'phoneNumber': auth.currentUser.phoneNumber,
-          'admin': true,
-        })
-        .then((value) => {
-              print(value.data),
-              test(),
-            })
-        .catchError((onError) => {
-              print(onError.toString()),
-            }));
+    function.call(<String, dynamic>{
+      'phoneNumber': auth.currentUser.phoneNumber
+    }).then((value) {
+      print(value.data);
+      checkStatus();
+    }).catchError((onError) => {
+          print(onError.toString()),
+        });
   }
 
-  makeActivist() {
+  makeActivist(bool value) {
+    locator<StorageUtil>().isActivist = value;
     FirebaseAuth auth = FirebaseAuth.instance;
     CloudFunctions _functions = CloudFunctions.instance;
-    HttpsCallable stuff =
-        _functions.getHttpsCallable(functionName: 'addActivistRole');
-    print(stuff
+    HttpsCallable function =
+        _functions.getHttpsCallable(functionName: 'changeActivistStatus');
+    function
         .call(<String, dynamic>{
           'phoneNumber': auth.currentUser.phoneNumber,
-          'isActivist': true,
+          'isActivist': value,
         })
         .then((value) => {
               print(value.data),
-              test(),
+              checkStatus(),
             })
         .catchError((onError) => {
               print(onError.toString()),
-            }));
+            });
   }
 
-  _getLocation() {
+  Future<bool> _getLocation() async {
     _geolocator
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-        .then((Position position) {
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation)
+        .then((Position position) async {
       setState(() {
         currentPosition = position;
         // print(currentPosition);
       });
       _getAddressFromLatLng();
+      return true;
     }).catchError((e) {
       print(e);
     });
+    return false;
   }
 
   _getAddressFromLatLng() async {
@@ -101,10 +100,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       setState(() {
         currentAddress =
             "${place.thoroughfare},${place.locality},${place.administrativeArea}";
-        // print(currentAddress);
+        print(currentAddress);
       });
     } catch (e) {
-      print(e);
+      print('Error is : ' + e.toString());
     }
   }
 
@@ -114,8 +113,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         progress += 1;
       });
       if (progress == 5) {
-        timer.cancel();
-        progress = 0;
+        resetCounter();
         showDialog(
             context: context,
             builder: (context) => Dialog(
@@ -202,7 +200,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    // makeActivist();
+    // makeAdmin();
+    // makeActivist(true);
     // test();
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
@@ -282,9 +281,16 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       color: klightGrey,
                       textColor: kBgColor,
                       text: 'Send Live Location',
-                      onPress: () {
-                        Share.share(
-                            'Hey There You can Find me Here --- $currentAddress');
+                      onPress: () async {
+                        _getLocation();
+                        if (currentAddress != '') {
+                          Share.share(
+                              'Hey There You can Find me Here --- $currentAddress');
+                          print(currentAddress);
+                        } else {
+                          Get.snackbar('No Location ',
+                              'No location currently available');
+                        }
                       },
                     ),
                     SizedBox(
@@ -311,7 +317,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Hold Emergency button Down for 10 second',
+                                    'Hold Emergency button Down for 5 second',
                                     style: TextStyle(
                                       color: kBgColor,
                                       fontSize: 13,
@@ -377,8 +383,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         children: [
                           HomeCard(
                             pressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Talk()));
+                              Get.to(Talk());
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //     builder: (context) => Talk()));
                             },
                             imgPath: 'assets/svgs/talk.svg',
                             title: 'Talk to\nSomeone',
@@ -389,10 +396,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           HomeCard(
                             pressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Ambulance()));
+                                  builder: (context) => EmergencysCenters()));
                             },
                             imgPath: 'assets/svgs/ambulance.svg',
-                            title: 'Call\nAmbulance',
+                            title: 'Emergency\nServices',
                           ),
                         ],
                       ),

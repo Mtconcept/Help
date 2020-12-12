@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:help/constants/buttons.dart';
-import 'package:help/constants/colors.dart';
-import 'package:help/constants/textFields.dart';
-import '../home.dart';
+import 'package:help/ui/constants/buttons.dart';
+import 'package:help/ui/constants/colors.dart';
+import 'package:help/ui/constants/textFields.dart';
 import 'signup_controller.dart';
 
 class SignUp extends StatelessWidget {
-  String imagePath = 'assets/images/signup.png';
-
+  final String imagePath = 'assets/images/signup.png';
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +14,8 @@ class SignUp extends StatelessWidget {
     double _height = _mediaData.size.height -
         _mediaData.padding.top -
         _mediaData.padding.bottom;
-    return GetBuilder<SingUpController>(
-        init: SingUpController(),
+    return GetBuilder<SignUpController>(
+        init: SignUpController(),
         builder: (model) {
           return Scaffold(
             body: SafeArea(
@@ -66,6 +64,9 @@ class SignUp extends StatelessWidget {
                                     MyTextFields(
                                       controller: model.fullNameController,
                                       fieldTitle: 'Full Name*',
+                                      inputType: TextInputType.name,
+                                      onEditingComplete: () =>
+                                          FocusScope.of(context).nextFocus(),
                                     ),
                                     SizedBox(
                                       height: 30,
@@ -73,6 +74,9 @@ class SignUp extends StatelessWidget {
                                     MyTextFields(
                                       controller: model.kinNameController,
                                       fieldTitle: 'Next Of Kin Name',
+                                      inputType: TextInputType.name,
+                                      onEditingComplete: () =>
+                                          FocusScope.of(context).nextFocus(),
                                     ),
                                     SizedBox(
                                       height: 30,
@@ -80,6 +84,9 @@ class SignUp extends StatelessWidget {
                                     MyTextFields(
                                       controller: model.kinAddressController,
                                       fieldTitle: 'Next of Kin Address',
+                                      inputType: TextInputType.streetAddress,
+                                      onEditingComplete: () =>
+                                          FocusScope.of(context).nextFocus(),
                                     ),
                                     SizedBox(
                                       height: 30,

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 
 import 'login/login.dart';
 
-
 class Onboarding extends StatefulWidget {
   @override
   _OnboardingState createState() => _OnboardingState();
@@ -39,10 +38,9 @@ class _OnboardingState extends State<Onboarding> {
   }
 
   void register() {
-
     Get.to(LogIn());
 
-  //  Navigator.of(context).push(MaterialPageRoute(builder: (_) => Register()));
+    //  Navigator.of(context).push(MaterialPageRoute(builder: (_) => Register()));
   }
 
   @override
