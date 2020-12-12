@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:help/shared_views/loading_dialog.dart';
 import 'package:help/views/otp.dart';
-import 'package:help/views/signUp.dart';
+import 'package:help/views/signup/signUp.dart';
 
 import '../home.dart';
 
@@ -36,7 +36,6 @@ class LoginController extends GetxController {
 
     loadDialog(title: "Please Hold on", dismiss: false);
 
-
     if (phoneNumber.startsWith("0")) {
       String formattedPhone = phoneNumber.substring(1, phoneNumber.length);
       phoneNumber = "+234$formattedPhone";
@@ -44,7 +43,7 @@ class LoginController extends GetxController {
       phoneNumber = "+234$phoneNumber";
     }
 
-
+    //   phoneNumber ="+2348036007161";
 
     auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
@@ -57,11 +56,11 @@ class LoginController extends GetxController {
           otpCode = "";
           this.verificationId = verificationId;
           this.forceResendingToken = forceResendingToken;
+          print("otp sent");
           Get.to(OTP());
         },
         codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
-      forceResendingToken: forceResendingToken
-    );
+        forceResendingToken: forceResendingToken);
   }
 
   void codeAutoRetrievalTimeout(String id) {}
@@ -119,14 +118,11 @@ class LoginController extends GetxController {
       return;
     }
 
-
-
     User user = auth.currentUser;
 
     if (user != null) {
       readUserData(user);
     } else {
-
       if (Get.isDialogOpen) {
         Get.back();
       }
@@ -143,7 +139,7 @@ class LoginController extends GetxController {
     ));
   }
 
-  readUserData(User user) async{
+  readUserData(User user) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     DocumentReference reference = firestore.collection("users").doc(user.uid);
@@ -154,11 +150,12 @@ class LoginController extends GetxController {
       Get.back();
     }
 
-    if (documentSnapshot.data() != null) {
+    if (documentSnapshot == null) {
       Get.to(Home());
-    } else{
+    } else if (documentSnapshot.data() != null) {
+      Get.to(Home());
+    } else {
       Get.to(SignUp());
     }
-
   }
 }

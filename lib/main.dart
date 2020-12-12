@@ -1,8 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'file:///C:/Users/Precious/FlutterApp/helpMe/lib/views/login/login.dart';
-import 'package:help/views/splashScreen.dart';
+import 'package:help/views/home.dart';
+
+import 'views/login/login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +21,7 @@ class Help extends StatelessWidget {
         bottomSheetTheme:
             BottomSheetThemeData(backgroundColor: Colors.black.withOpacity(0)),
       ),
-      home: LogIn(),
+      home: Home(),
     );
   }
 }

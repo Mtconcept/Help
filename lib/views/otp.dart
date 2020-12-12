@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:help/constants/colors.dart';
-import 'package:help/views/login/login_controller.dart';
-import 'package:help/views/signUp.dart';
+
 import '../constants/buttons.dart';
+import '../constants/colors.dart';
+import 'login/login_controller.dart';
 
 class OTP extends StatefulWidget {
   @override

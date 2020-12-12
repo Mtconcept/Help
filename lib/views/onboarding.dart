@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:help/views/register.dart';
+import 'package:get/get.dart';
+
+import 'login/login.dart';
+
 
 class Onboarding extends StatefulWidget {
   @override
@@ -36,7 +39,10 @@ class _OnboardingState extends State<Onboarding> {
   }
 
   void register() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) => Register()));
+
+    Get.to(LogIn());
+
+  //  Navigator.of(context).push(MaterialPageRoute(builder: (_) => Register()));
   }
 
   @override
